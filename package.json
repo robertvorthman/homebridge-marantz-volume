@@ -1,6 +1,6 @@
 {
   "name": "homebridge-marantz-volume",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Homebridge plugin to control Marantz receiver volume with Siri commands",
   "main": "index.js",
   "repository": {
@@ -15,6 +15,10 @@
     "denon",
     "siri"
   ],
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.2.0"
+  },
   "author": "Robert Vorthman",
   "license": "MIT",
   "bugs": {
