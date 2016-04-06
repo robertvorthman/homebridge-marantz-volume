@@ -8,6 +8,8 @@ module.exports = function(homebridge) {
 
 function ReceiverVolume(log, config) {
   this.log = log;
+  this.name = config.name || "Receiver Volume";
+  this.bulbName = this.name;
   this.log("Initialize receiver volume service");
 }
 
