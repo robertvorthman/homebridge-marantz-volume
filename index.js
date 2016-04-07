@@ -42,16 +42,20 @@ ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
 }
 
 ReceiverVolume.prototype.setBrightness = function(level, callback){
-    //enforce maximum volume
-    var newVolume = (level > this.maxVolume) ? this.maxVolume : level;
+    
+    var newVolume = level;
+    
+    if(level > this.maxVolume){
+        //enforce maximum volume
+        newVolume = this.maxVolume;
+        this.log('Volume %s capped to max volume %s', level, this.maxVolume);
+    }
+    
     //convert volume percentage to relative volume
     var relativeVolume = (newVolume - 80).toFixed(1);
     
-    var self = this;
-    
     request.get('http://' + this.host + this.controlUrl + '?1+' + relativeVolume, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            self.log('Set Marantz volume (brightness) to %s', newVolume);
             callback(null);
         } else {
             callback(error)
@@ -62,14 +66,11 @@ ReceiverVolume.prototype.setBrightness = function(level, callback){
 
 ReceiverVolume.prototype.getBrightness = function(callback) {
     
-    var self = this;
-    
     request.get('http://' + this.host + this.statusUrl, function (error, response, body) {
         var xml = '';
         if (!error && response.statusCode == 200) {
             parseString(xml + body, function (err, result) {
                 var volume = parseInt(result.item.MasterVolume[0].value[0]) + 80;
-                self.log('Marantz volume (brightness), is %s', volume);
                 callback(null, volume);
             });
         }
