@@ -47,9 +47,11 @@ ReceiverVolume.prototype.setBrightness = function(level, callback){
     //convert volume percentage to relative volume
     var relativeVolume = (newVolume - 80).toFixed(1);
     
+    var self = this;
+    
     request.get('http://' + this.host + this.controlUrl + '?1+' + relativeVolume, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            this.log('Set Marantz volume (brightness) to %s', newVolume);
+            self.log('Set Marantz volume (brightness) to %s', newVolume);
             callback(null);
         } else {
             callback(error)
