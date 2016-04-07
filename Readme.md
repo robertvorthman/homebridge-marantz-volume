@@ -5,7 +5,11 @@ This plugin allows you to control your Marantz receiver volume with Siri, with c
 
 This plugin controls VOLUME ONLY.  For powering on your Marantz/Denon, see https://github.com/stfnhmplr/homebridge-denon-marantz-avr by stfnhmplr
 
+Using HomeKit apps or Siri to turn this accessory on or off will have no effect.  This is to avoid having your receiver turn off if you tell Siri to "turn off all the lights".
+
 This plugin may also work with Denon receivers.  Contact me if you have verified this plugin working with a Denon receiver so I can update this readme.
+
+# Siri
 
 Controlling the volume with Siri has quirks.
 
