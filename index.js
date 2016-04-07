@@ -62,12 +62,14 @@ ReceiverVolume.prototype.setBrightness = function(level, callback){
 
 ReceiverVolume.prototype.getBrightness = function(callback) {
     
+    var self = this;
+    
     request.get('http://' + this.host + this.statusUrl, function (error, response, body) {
         var xml = '';
         if (!error && response.statusCode == 200) {
             parseString(xml + body, function (err, result) {
                 var volume = parseInt(result.item.MasterVolume[0].value[0]) + 80;
-                this.log('Marantz volume (brightness), is %s', volume);
+                self.log('Marantz volume (brightness), is %s', volume);
                 callback(null, volume);
             });
         }
