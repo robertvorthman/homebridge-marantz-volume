@@ -58,8 +58,6 @@ ReceiverVolume.prototype.setBrightness = function(level, callback){
         }
     });
     
-    
-    callback();
 }
 
 ReceiverVolume.prototype.getBrightness = function(callback) {
