@@ -36,18 +36,21 @@ This does
 Configuration sample:
 
  ```
-"platforms": [
-        {
-    		"accessory":      "marantz-volume",
-    		"name":           "Stereo Volume",
-    		"host": "192.168.1.15",
-    		"maxVolume": 50
-    	}  
-    ]
+"accessories": [
+    {
+		"accessory":      "marantz-volume",
+		"name":           "Stereo Volume",
+		"host": "192.168.1.15",
+		"maxVolume": 50
+	},
+	...
+]
 
 ```
 
 # Special Thanks
 This plugin was built upon code from the following homebridge plugins
+
 https://www.npmjs.com/package/homebridge-fakebulb by schemish
+
 https://www.npmjs.com/package/homebridge-denon by stfnhmplr
