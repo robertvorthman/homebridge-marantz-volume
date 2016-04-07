@@ -8,8 +8,22 @@ module.exports = function(homebridge) {
 
 function ReceiverVolume(log, config) {
     this.log = log;
-    this.name = config.name || "Receiver Volume";
+    
+    this.name = config['name'] || "Receiver Volume";
+    this.maxVolume = config['maxVolume'] || 70;
+    this.host = config['host'];
+    
+    /*
     this.bulbName = this.name;
+    
+    if (!this.switch.status) {
+        this.log.warn('Ignoring request, switch.status not defined.');
+        callback(new Error('No switch.status url defined.'));
+        return;
+    }
+    */
+    
+    
     this.log("Initialize receiver volume service");
 }
 
@@ -26,8 +40,10 @@ ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
 }
 
 ReceiverVolume.prototype.setBrightness = function(level, callback){
+    //enforce maximum volume
+    var newVolume = (level > this.maxVolume) ? this.maxVolume : level;
     
-    this.log('Set brightness to %s', level);
+    this.log('Set brightness to %s', newVolume);
     callback();
 }
 
