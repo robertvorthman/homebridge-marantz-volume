@@ -16,6 +16,9 @@ function ReceiverVolume(log, config) {
     this.maxVolume = config['maxVolume'] || 70;
     this.host = config['host'];
     
+    this.statusUrl = "/goform/formMainZone_MainZoneXml.xml";
+    this.controlUrl = "/goform/formiPhoneAppVolume.xml";
+    
     this.powerState = 0;
 
     if (!this.host) {
@@ -41,38 +44,35 @@ ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
 ReceiverVolume.prototype.setBrightness = function(level, callback){
     //enforce maximum volume
     var newVolume = (level > this.maxVolume) ? this.maxVolume : level;
+    //convert volume percentage to relative volume
+    var relativeVolume = (newVolume - 80).toFixed(1);
     
-    /*
-    var vol = (volume - 80).toFixed(1);  //volume fix
-    request.get('http://' + this.ip + '/goform/formiPhoneAppVolume.xml?1+' + vol, function (error, response, body) {
+    request.get('http://' + this.host + this.controlUrl + '?1+' + relativeVolume, function (error, response, body) {
         if (!error && response.statusCode == 200) {
+            this.log('Set Marantz volume (brightness) to %s', newVolume);
             callback(null);
         } else {
             callback(error)
         }
     });
-    */
     
-    this.log('Set brightness to %s', newVolume);
+    
     callback();
 }
 
 ReceiverVolume.prototype.getBrightness = function(callback) {
-    /*
-    request.get('http://' + this.ip + this.status_url, function (error, response, body) {
+    
+    request.get('http://' + this.host + this.statusUrl, function (error, response, body) {
         var xml = '';
         if (!error && response.statusCode == 200) {
             parseString(xml + body, function (err, result) {
-                callback(null, parseInt(result.item.MasterVolume[0].value[0]) + 80);
+                var volume = parseInt(result.item.MasterVolume[0].value[0]) + 80;
+                this.log('Marantz volume (brightness), is %s', volume);
+                callback(null, volume);
             });
         }
     }.bind(this));
-    */
-    var level = .5;
     
-    this.log('Get brightness, is %s', level);
-    
-    callback(null, level);
 }
 ReceiverVolume.prototype.getServices = function() {
     var lightbulbService = new Service.Lightbulb(this.name);
