@@ -12,7 +12,9 @@ This plugin may also work with Denon receivers.  Contact me if you have verified
 Try these Siri commands
 
 *Set the stereo volume to 25%
+
 *Set the living room to 25%
+
 *Increase/Decrease the stereo volume by 5%
 
 
