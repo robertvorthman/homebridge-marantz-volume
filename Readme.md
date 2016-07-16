@@ -20,10 +20,10 @@ Try these Siri commands
 ## watchOS 3 Home App
 Use the Digital Crown to adjust volume with Apple's Home app
 
-![Adjust Stereo Volume Using Apple Watch Crown](https://cloud.githubusercontent.com/assets/4665046/16897531/158d0cb4-4b82-11e6-9bb2-c575d1b461d3.gif)
+![Adjust Stereo Volume Using Apple Watch Crown](https://cloud.githubusercontent.com/assets/4665046/16897807/3909c1ba-4b8b-11e6-81d6-f38dbd2aa46c.gif)
 
 ## iOS 10 Control Center
-iOS 10 adds HomeKit shortcuts to the iOS Control Center
+iOS 10 adds HomeKit shortcuts to the iOS Control Center, so you can adjust the volume without even unlocking your phone.
 
 ![Adjust Stereo Volume Using Control Center](https://cloud.githubusercontent.com/assets/4665046/16897533/1590c1c4-4b82-11e6-8779-322ad15c31ff.gif)
 
