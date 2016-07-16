@@ -7,7 +7,7 @@ This plugin controls VOLUME ONLY.  For powering on your Marantz/Denon, see https
 
 This plugin may also work with Denon receivers.  Contact me if you have verified this plugin working with a Denon receiver so I can update this readme.
 
-# Siri
+## Siri
 
 Try these Siri commands
 
@@ -15,6 +15,17 @@ Try these Siri commands
 * Set the living room to 25%
 * Increase/Decrease the stereo volume by 5%
 
+![Adjust Stereo Volume Using Siri](https://cloud.githubusercontent.com/assets/4665046/16897532/158d983c-4b82-11e6-984c-11d74e00f46e.gif)
+
+## watchOS 3 Home App
+Use the Digital Crown to adjust volume with Apple's Home app
+
+![Adjust Stereo Volume Using Apple Watch Crown](https://cloud.githubusercontent.com/assets/4665046/16897531/158d0cb4-4b82-11e6-9bb2-c575d1b461d3.gif)
+
+## iOS 10 Control Center
+iOS 10 adds HomeKit shortcuts to the iOS Control Center
+
+![Adjust Stereo Volume Using Control Center](https://cloud.githubusercontent.com/assets/4665046/16897533/1590c1c4-4b82-11e6-8779-322ad15c31ff.gif)
 
 # Installation
 
