@@ -1,11 +1,9 @@
 # homebridge-marantz-volume
 Marantz Receiver plugin for homebridge: https://github.com/nfarina/homebridge
 
-This plugin allows you to control your Marantz receiver volume with Siri, with commands like "set the stereo volume to 25%".  Your receiver will appear as a light bulb in HomeKit, this is so the brightness characteristic of a light bulb can be leveraged as a way to set the receiver volume by using Siri.  Unlike other light bulb HomeKit accessories, this plugin ignores power state commands (on/off), this is to avoid having your receiver turn off if you tell Siri to "turn off all the lights".
+This plugin allows you to control your Denon or Marantz receiver volume with Siri, with commands like "set the stereo volume to 25%".  Your receiver will appear as a light bulb in HomeKit, this is so the brightness characteristic of a light bulb can be leveraged as a way to set the receiver volume by using Siri.  Unlike other light bulb HomeKit accessories, this plugin ignores power state commands (on/off), this is to avoid having your receiver turn off if you tell Siri to "turn off all the lights".
 
 This plugin controls VOLUME ONLY.  For powering on your Marantz/Denon, see https://github.com/stfnhmplr/homebridge-denon-marantz-avr by stfnhmplr
-
-This plugin may also work with Denon receivers.  Contact me if you have verified this plugin working with a Denon receiver so I can update this readme.
 
 ## Siri
 
@@ -14,6 +12,9 @@ Try these Siri commands
 * Set the stereo volume to 25%
 * Set the living room to 25%
 * Increase/Decrease the stereo volume by 5%
+
+If those Siri commands do not work, try saying "stereo volume brightness", for example "set the stereo volume brightness to 25%"
+
 
 ![Adjust Stereo Volume Using Siri](https://cloud.githubusercontent.com/assets/4665046/16897532/158d983c-4b82-11e6-984c-11d74e00f46e.gif)
 
