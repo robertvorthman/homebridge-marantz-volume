@@ -11,15 +11,12 @@ module.exports = function(homebridge) {
 
 function ReceiverVolume(log, config) {
     this.log = log;
-    
+
     this.name = config['name'] || "Receiver Volume";
     this.maxVolume = config['maxVolume'] || 70;
     this.host = config['host'];
-    
-    this.statusUrl = "/goform/formMainZone_MainZoneXml.xml";
-    this.controlUrl = "/goform/formiPhoneAppVolume.xml";
-    
-    this.powerState = 0;
+    this.zone = (config['zone'] || 1) | 0; // default to 1, and make sure its an integer
+    this.controlPower = !!config['controlPower']; // default to false, and make sure its a bool
 
     if (!this.host) {
         this.log.warn('Config is missing host/IP of receiver');
@@ -27,56 +24,92 @@ function ReceiverVolume(log, config) {
         return;
     }
 
-}
-
-ReceiverVolume.prototype.getPowerOn = function(callback) {
-    this.log("Receiver Volume power state is %s", this.powerState);
-    callback(null, this.powerState);
-}
-
-ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
-    
-    this.powerState = powerOn ? 1 : 0;
-    this.log("Set receiver volume power state to %s", this.powerState);
-    callback(null);
-}
-
-ReceiverVolume.prototype.setBrightness = function(level, callback){
-    
-    var newVolume = level;
-    
-    if(level > this.maxVolume){
-        //enforce maximum volume
-        newVolume = this.maxVolume;
-        this.log('Volume %s capped to max volume %s', level, this.maxVolume);
+    if (this.zone < 1 && this.zone > 2) {
+        this.log.warn('Zone number is not recognized (must be 1 or 2); assuming zone 1');
+        this.zone = 1;
     }
-    
-    //convert volume percentage to relative volume
-    var relativeVolume = (newVolume - 80).toFixed(1);
-    
-    request.get('http://' + this.host + this.controlUrl + '?1+' + relativeVolume, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            callback(null);
-        } else {
-            callback(error)
-        }
-    });
-    
+
+    this.zoneName = this.zone === 1 ? "MainZone" : "Zone2";
+
+    if (!this.controlPower) {
+        this.fakePowerState = 0;
+    }
 }
 
-ReceiverVolume.prototype.getBrightness = function(callback) {
-    
-    request.get('http://' + this.host + this.statusUrl, function (error, response, body) {
+ReceiverVolume.prototype.getStatus = function(callback) {
+    var statusUrl = `http://${this.host}/goform/form${this.zoneName}_${this.zoneName}XmlStatus.xml`;
+    request.get(statusUrl, function (error, response, body) {
         var xml = '';
         if (!error && response.statusCode == 200) {
             parseString(xml + body, function (err, result) {
-                var volume = parseInt(result.item.MasterVolume[0].value[0]) + 80;
-                callback(null, volume);
-            });
+                callback(result.item);
+            }.bind(this));
         }
     }.bind(this));
-    
 }
+
+ReceiverVolume.prototype.setControl = function (control, command, callback) {
+    var controlUrl = `http://${this.host}/goform/formiPhoneApp${control}.xml?${this.zone}+${command}`;
+    request.get(controlUrl, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            callback(null);
+        } else {
+            callback(error);
+        }
+    }.bind(this));
+}
+
+ReceiverVolume.prototype.getPowerOn = function(callback) {
+    if (this.controlPower) {
+        this.getStatus(function(status) {
+            var powerState = status.Power[0].value[0] === "ON" ? 1 : 0;
+            this.log("Receiver %s Volume power state is %s", this.zoneName, powerState);
+            callback(null, powerState);
+        }.bind(this));
+    } else {
+        this.log("Receiver %s Volume power state is %s", this.zoneName, this.fakePowerState);
+        callback(null, this.fakePowerState);
+    }
+}
+
+ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
+    if (this.controlPower) {
+        var command = powerOn ? 'PowerOn' : 'PowerStandby';
+        this.log("Set receiver %s volume power state to %s", this.zoneName, command);
+        this.setControl('Power', command, callback);
+    } else {
+        this.fakePowerState = powerOn ? 1 : 0;
+        this.log("Set receiver %s volume power state to %s", this.zoneName, this.fakePowerState);
+        callback(null);
+    }
+}
+
+ReceiverVolume.prototype.setBrightness = function(level, callback) {
+
+    var newVolume = level;
+
+    if(level > this.maxVolume){
+        //enforce maximum volume
+        newVolume = this.maxVolume;
+        this.log('Volume %s capped to max volume %s on %s', level, this.maxVolume, this.zoneName);
+    }
+
+    //convert volume percentage to relative volume
+    var relativeVolume = (newVolume - 80).toFixed(1);
+
+    //cap between -80 and 0
+    relativeVolume = Math.max(-80.0, Math.min(0.0, relativeVolume));
+
+    this.setControl('Volume', relativeVolume, callback);
+}
+
+ReceiverVolume.prototype.getBrightness = function(callback) {
+    this.getStatus(function(status) {
+        var volume = parseInt(status.MasterVolume[0].value[0]) + 80;
+        callback(null, volume);
+    }.bind(this));
+}
+
 ReceiverVolume.prototype.getServices = function() {
     var lightbulbService = new Service.Lightbulb(this.name);
 

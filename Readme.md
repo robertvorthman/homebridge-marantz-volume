@@ -1,9 +1,11 @@
 # homebridge-marantz-volume
 Marantz Receiver plugin for homebridge: https://github.com/nfarina/homebridge
 
-This plugin allows you to control your Denon or Marantz receiver volume with Siri, with commands like "set the stereo volume to 25%".  Your receiver will appear as a light bulb in HomeKit, this is so the brightness characteristic of a light bulb can be leveraged as a way to set the receiver volume by using Siri.  Unlike other light bulb HomeKit accessories, this plugin ignores power state commands (on/off), this is to avoid having your receiver turn off if you tell Siri to "turn off all the lights".
+This plugin allows you to control your Denon or Marantz receiver volume with Siri, with commands like "set the stereo volume to 25%".  Your receiver will appear as a light bulb in HomeKit, this is so the brightness characteristic of a light bulb can be leveraged as a way to set the receiver volume by using Siri.
 
-This plugin controls VOLUME ONLY.  For powering on your Marantz/Denon, see https://github.com/stfnhmplr/homebridge-denon-marantz-avr by stfnhmplr
+Unlike other light bulb HomeKit accessories, this plugin ignores power state commands (on/off) by default, this is to avoid having your receiver turn off if you tell Siri to "turn off all the lights".  If you want to control the power state of the receiver rather than ignoring it, set the `"controlPower":true` property in the configuration.
+
+This plugin also allows you to register the "main zone" and "zone 2" of your receiver as independent accessories within HomeKit, if your receiver is multi-zone.
 
 ## Siri
 
@@ -36,20 +38,34 @@ iOS 10 adds HomeKit shortcuts to the iOS Control Center, so you can adjust the v
 
 # Configuration
 
+Add the plugin as an accessory to have it control the main zone for your AVR.  If your receiver supports a 2nd zone, add
+the plugin a second time with `"zone":2` in the accessory properties, the same host, and a different name.
+
 Configuration sample:
 
  ```
 "accessories": [
-    {
+  {
 		"accessory":      "marantz-volume",
 		"name":           "Stereo Volume",
-		"host": "192.168.1.15",
-		"maxVolume": 50
+		"host":           "192.168.1.15",
+		"maxVolume":      50
+	},
+  {
+		"accessory":      "marantz-volume",
+		"name":           "Outside Volume",
+		"host":           "192.168.1.15",
+		"maxVolume":      80,
+    "zone":           2,
+    "controlPower":   true
 	},
 	...
 ]
 
 ```
+
+In this example, the receiver has two zones, the volume control works for both zones (named "Stereo Volume" and "Outside Volume"),
+and the power control works is ignored for the main zone and is enabled for the second zone.
 
 # Special Thanks
 This plugin was built upon code from the following homebridge plugins
