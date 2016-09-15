@@ -43,23 +43,23 @@ the plugin a second time with `"zone":2` in the accessory properties, the same h
 
 Configuration sample:
 
- ```
+```
 "accessories": [
   {
-		"accessory":      "marantz-volume",
-		"name":           "Stereo Volume",
-		"host":           "192.168.1.15",
-		"maxVolume":      50
-	},
+    "accessory":      "marantz-volume",
+    "name":           "Stereo Volume",
+    "host":           "192.168.1.15",
+    "maxVolume":      50
+  },
   {
-		"accessory":      "marantz-volume",
-		"name":           "Outside Volume",
-		"host":           "192.168.1.15",
-		"maxVolume":      80,
+    "accessory":      "marantz-volume",
+    "name":           "Outside Volume",
+    "host":           "192.168.1.15",
+    "maxVolume":      80,
     "zone":           2,
     "controlPower":   true
-	},
-	...
+  },
+  ...
 ]
 
 ```
