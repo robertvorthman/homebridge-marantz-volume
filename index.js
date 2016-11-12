@@ -44,6 +44,8 @@ ReceiverVolume.prototype.getStatus = function(callback) {
             parseString(xml + body, function (err, result) {
                 callback(result.item);
             }.bind(this));
+        }else{
+            callback(null);
         }
     }.bind(this));
 }
