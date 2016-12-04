@@ -17,7 +17,12 @@ function ReceiverVolume(log, config) {
     this.host = config['host'];
     this.zone = (config['zone'] || 1) | 0; // default to 1, and make sure its an integer
     this.controlPower = !!config['controlPower']; // default to false, and make sure its a bool
-
+    this.mapMaxVolumeTo100 = !!config['mapMaxVolumeTo100'];
+    
+    //cap maxVolume.  Denon/Marantz percentage maxes at 98 in receiver settings
+    if(this.maxVolume > 98)
+        this.maxVolume = 98;
+    
     if (!this.host) {
         this.log.warn('Config is missing host/IP of receiver');
         callback(new Error('No host/IP defined.'));
@@ -86,10 +91,19 @@ ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
     }
 }
 
-ReceiverVolume.prototype.setBrightness = function(level, callback) {
+ReceiverVolume.prototype.setBrightness = function(newLevel, callback) {
 
-    var maxVolume = this.maxVolume / 100.0;
-    var newVolume = maxVolume * level / 100.0;
+    if(this.mapMaxVolumeTo100){
+        var volumeMultiplier = 98/this.maxVolume; //Denon/Marantz percentage maxes at 98 in receiver settings
+        var newVolume = volumeMultiplier * newLevel;
+    }else{
+        var newVolume = Math.max(newLevel, maxVolume);
+    }
+    
+    //cap newVolume.  //Denon/Marantz percentage maxes at 98 in receiver settings
+    if(newVolume > 98){
+        newVolume = 98;
+    }
 
     //convert volume percentage to relative volume
     var relativeVolume = (2 * (newVolume - 80)).toFixed(0) / 2.0;
