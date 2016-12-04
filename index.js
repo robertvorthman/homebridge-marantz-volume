@@ -88,7 +88,7 @@ ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
 
 ReceiverVolume.prototype.setBrightness = function(level, callback) {
 
-    var maxVolume = this.maxVolume * 80.0 / 100.0;
+    var maxVolume = this.maxVolume / 100.0;
     var newVolume = maxVolume * level / 100.0;
 
     //convert volume percentage to relative volume
