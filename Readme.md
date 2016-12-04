@@ -38,7 +38,23 @@ iOS 10 adds HomeKit shortcuts to the iOS Control Center, so you can adjust the v
 
 # Configuration
 
-Add the plugin as an accessory to have it control the main zone for your AVR.  If your receiver supports a 2nd zone, add
+Add as an accessory by editing the homebridge config.json file.
+
+## Simple Example
+
+```
+"accessories": [
+  {
+    "accessory":      "marantz-volume",
+    "name":           "Stereo Volume",
+    "host":           "192.168.1.15"
+  }
+]
+```
+
+## Multiple Zones Example
+
+If your receiver supports a 2nd zone, add
 the plugin a second time with `"zone":2` in the accessory properties, the same host, and a different name.
 
 Configuration sample:
@@ -63,9 +79,14 @@ Configuration sample:
 ]
 
 ```
-
-In this example, the receiver has two zones, the volume control works for both zones (named "Stereo Volume" and "Outside Volume"),
+In the above example, the receiver has two zones, the volume control works for both zones (named "Stereo Volume" and "Outside Volume"),
 and the power control works is ignored for the main zone and is enabled for the second zone.
+
+## Additional Configuration Details
+
+The option `maxVolume` defaults to 70 unless otherwise specified as a values between 0 and 100.
+
+Setting `"mapMaxVolumeTo100":true` will remap the volume percentages that appear in the Home app so that the configured maxVolume will appear as 100% in the Home app.  For example, if the maxVolume is 70%, then setting the stereo volume brightness to 50% would set the receiver's volume to 35%.  Adjusting the stereo volume knob to 70 will appear as 100% brightness in the Home app.  This option could confuse some users to it defaults to off `false`, but it does give the user finer volume control especially when sliding the brightness slider up and down in the Home app.
 
 # Special Thanks
 This plugin was built upon code from the following homebridge plugins

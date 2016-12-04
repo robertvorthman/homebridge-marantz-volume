@@ -37,7 +37,7 @@ function ReceiverVolume(log, config) {
     this.zoneName = this.zone === 1 ? "MainZone" : "Zone2";
 
     if (!this.controlPower) {
-        this.fakePowerState = 0;
+        this.fakePowerState = 1; //default to on so that brightness will update in HomeKit apps
     }
 }
 
@@ -94,10 +94,11 @@ ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
 ReceiverVolume.prototype.setBrightness = function(newLevel, callback) {
 
     if(this.mapMaxVolumeTo100){
-        var volumeMultiplier = 98/this.maxVolume; //Denon/Marantz percentage maxes at 98 in receiver settings
+        var volumeMultiplier = this.maxVolume/100;
         var newVolume = volumeMultiplier * newLevel;
     }else{
-        var newVolume = Math.max(newLevel, this.maxVolume);
+        //cap to max volume set in homebridge config.json
+        var newVolume = Math.min(newLevel, this.maxVolume);
     }
     
     //cap newVolume.  //Denon/Marantz percentage maxes at 98 in receiver settings
@@ -110,14 +111,28 @@ ReceiverVolume.prototype.setBrightness = function(newLevel, callback) {
 
     //cap between -80 and 0
     relativeVolume = Math.max(-80.0, Math.min(0.0, relativeVolume));
-
+    
     this.setControl('Volume', relativeVolume, callback);
 }
 
 ReceiverVolume.prototype.getBrightness = function(callback) {
     this.getStatus(function(status) {
-        var volume = -status.MasterVolume[0].value[0] / 80.0 * 100.0;
-        callback(null, volume);
+        
+        if(status){
+            var volume = parseInt(status.MasterVolume[0].value[0]) + 80;
+            this.log("Get receiver volume %s ", volume);
+            
+            if(this.mapMaxVolumeTo100){
+                volume = volume * (100/this.maxVolume);
+            }
+            
+            
+            callback(null, volume);
+        }else{
+            this.log("Unable to get receiver status");
+            callback(null);
+        }
+        
     }.bind(this));
 }
 
