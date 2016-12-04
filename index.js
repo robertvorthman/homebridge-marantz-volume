@@ -97,7 +97,7 @@ ReceiverVolume.prototype.setBrightness = function(newLevel, callback) {
         var volumeMultiplier = 98/this.maxVolume; //Denon/Marantz percentage maxes at 98 in receiver settings
         var newVolume = volumeMultiplier * newLevel;
     }else{
-        var newVolume = Math.max(newLevel, maxVolume);
+        var newVolume = Math.max(newLevel, this.maxVolume);
     }
     
     //cap newVolume.  //Denon/Marantz percentage maxes at 98 in receiver settings
