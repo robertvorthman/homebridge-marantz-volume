@@ -88,16 +88,11 @@ ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
 
 ReceiverVolume.prototype.setBrightness = function(level, callback) {
 
-    var newVolume = level;
-
-    if(level > this.maxVolume){
-        //enforce maximum volume
-        newVolume = this.maxVolume;
-        this.log('Volume %s capped to max volume %s on %s', level, this.maxVolume, this.zoneName);
-    }
+    var maxVolume = this.maxVolume * 80.0 / 100.0;
+    var newVolume = maxVolume * level / 100.0;
 
     //convert volume percentage to relative volume
-    var relativeVolume = (newVolume - 80).toFixed(1);
+    var relativeVolume = (2 * (newVolume - 80)).toFixed(0) / 2.0;
 
     //cap between -80 and 0
     relativeVolume = Math.max(-80.0, Math.min(0.0, relativeVolume));
