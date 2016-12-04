@@ -102,7 +102,7 @@ ReceiverVolume.prototype.setBrightness = function(level, callback) {
 
 ReceiverVolume.prototype.getBrightness = function(callback) {
     this.getStatus(function(status) {
-        var volume = parseInt(status.MasterVolume[0].value[0]) + 80;
+        var volume = -status.MasterVolume[0].value[0] / 80.0 * 100.0;
         callback(null, volume);
     }.bind(this));
 }
