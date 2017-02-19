@@ -88,6 +88,8 @@ The option `maxVolume` defaults to 70 unless otherwise specified as a values bet
 
 Setting `"mapMaxVolumeTo100":true` will remap the volume percentages that appear in the Home app so that the configured maxVolume will appear as 100% in the Home app.  For example, if the maxVolume is 70%, then setting the stereo volume brightness to 50% would set the receiver's volume to 35%.  Adjusting the stereo volume knob to 70 will appear as 100% brightness in the Home app.  This option could confuse some users to it defaults to off `false`, but it does give the user finer volume control especially when sliding the brightness slider up and down in the Home app.
 
+The `"controlMute":true` option will change the on/off switch behavior to control the receiver's mute status. If `"controlPower":true` is set, this option will be ignored.
+
 # Special Thanks
 This plugin was built upon code from the following homebridge plugins
 
