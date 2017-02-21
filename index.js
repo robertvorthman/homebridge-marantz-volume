@@ -17,6 +17,7 @@ function ReceiverVolume(log, config) {
     this.host = config['host'];
     this.zone = (config['zone'] || 1) | 0; // default to 1, and make sure its an integer
     this.controlPower = !!config['controlPower']; // default to false, and make sure its a bool
+    this.controlMute = !!config['controlMute'] && this.controlPower === false;
     this.mapMaxVolumeTo100 = !!config['mapMaxVolumeTo100'];
     
     //cap maxVolume.  Denon/Marantz percentage maxes at 98 in receiver settings
@@ -73,6 +74,12 @@ ReceiverVolume.prototype.getPowerOn = function(callback) {
             this.log("Receiver %s Volume power state is %s", this.zoneName, powerState);
             callback(null, powerState);
         }.bind(this));
+    } else if (this.controlMute) {
+        this.getStatus(function(status) {
+            var powerState = status.Mute[0].value[0] === "on" ? 0 : 1;
+            this.log("Receiver %s Volume state is %s", this.zoneName, powerState);
+            callback(null, powerState);
+        }.bind(this));
     } else {
         this.log("Receiver %s Volume power state is %s", this.zoneName, this.fakePowerState);
         callback(null, this.fakePowerState);
@@ -84,6 +91,10 @@ ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
         var command = powerOn ? 'PowerOn' : 'PowerStandby';
         this.log("Set receiver %s volume power state to %s", this.zoneName, command);
         this.setControl('Power', command, callback);
+    } else if (this.controlMute) {
+        var command = powerOn ? 'MuteOff' : 'MuteOn';
+        this.log("Set receiver %s volume state to %s", this.zoneName, command);
+        this.setControl('Mute', command, callback);
     } else {
         this.fakePowerState = powerOn ? 1 : 0;
         this.log("Set receiver %s volume power state to %s", this.zoneName, this.fakePowerState);
