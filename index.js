@@ -72,7 +72,7 @@ ReceiverVolume.prototype.getPowerOn = function(callback) {
         this.getStatus(function(status) {
             var powerState = status ? (status.Power[0].value[0] === "ON" ? 1 : 0) : 0;
             this.log("Receiver %s Volume power state is %s", this.zoneName, powerState);
-            callback(null, powerState);           
+            callback(null, powerState);
         }.bind(this));
     } else if (this.controlMute) {
         this.getStatus(function(status) {
