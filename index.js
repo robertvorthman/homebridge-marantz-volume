@@ -70,13 +70,13 @@ ReceiverVolume.prototype.setControl = function (control, command, callback) {
 ReceiverVolume.prototype.getPowerOn = function(callback) {
     if (this.controlPower) {
         this.getStatus(function(status) {
-            var powerState = status.Power[0].value[0] === "ON" ? 1 : 0;
+            var powerState = status ? (status.Power[0].value[0] === "ON" ? 1 : 0) : 0;
             this.log("Receiver %s Volume power state is %s", this.zoneName, powerState);
             callback(null, powerState);
         }.bind(this));
     } else if (this.controlMute) {
         this.getStatus(function(status) {
-            var powerState = status.Mute[0].value[0] === "on" ? 0 : 1;
+            var powerState = status ? (status.Mute[0].value[0] === "on" ? 0 : 1) : 0;
             this.log("Receiver %s Volume state is %s", this.zoneName, powerState);
             callback(null, powerState);
         }.bind(this));
