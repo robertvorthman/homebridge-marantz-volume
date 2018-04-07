@@ -52,6 +52,10 @@ Add as an accessory by editing the homebridge config.json file.
 ]
 ```
 
+###
+
+Newer Denon receivers may need to add port 8080 to the host name, example: 192.168.1.15:8080
+
 ## Multiple Zones Example
 
 If your receiver supports a 2nd zone, add

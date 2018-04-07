@@ -43,7 +43,7 @@ function ReceiverVolume(log, config) {
 }
 
 ReceiverVolume.prototype.getStatus = function(callback) {
-    var statusUrl = `http://${this.host}/goform/form${this.zoneName}_${this.zoneName}XmlStatus.xml`;
+    var statusUrl = `http://${this.host}/goform/form${this.zoneName}_${this.zoneName}XmlStatusLite.xml`;
     request.get(statusUrl, function (error, response, body) {
         var xml = '';
         if (!error && response.statusCode == 200) {
