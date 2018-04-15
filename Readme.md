@@ -51,7 +51,6 @@ Add as an accessory by editing the homebridge config.json file.
   }
 ]
 ```
-
 ###
 
 Newer Denon receivers may need to add port 8080 to the host name, example: 192.168.1.15:8080
@@ -87,6 +86,17 @@ In the above example, the receiver has two zones, the volume control works for b
 and the power control works is ignored for the main zone and is enabled for the second zone.
 
 ## Additional Configuration Details
+
+For newer model Denon's, you might have to add port 8080 to the host option, example:
+```
+"accessories": [
+  {
+    "accessory":      "marantz-volume",
+    "name":           "Stereo Volume",
+    "host":           "192.168.1.15:8080"
+  }
+]
+```
 
 The option `maxVolume` defaults to 70 unless otherwise specified as a values between 0 and 100.
 
