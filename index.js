@@ -148,7 +148,7 @@ ReceiverVolume.prototype.getBrightness = function(callback) {
 }
 
 ReceiverVolume.prototype.getServices = function() {
-    var lightbulbService = new Service.Lightbulb(this.name);
+    var lightbulbService = new Service.Fan(this.name);
 
     lightbulbService
         .getCharacteristic(Characteristic.On)
@@ -156,7 +156,7 @@ ReceiverVolume.prototype.getServices = function() {
         .on('set', this.setPowerOn.bind(this));
 
     lightbulbService
-        .addCharacteristic(new Characteristic.Brightness())
+        .addCharacteristic(new Characteristic.RotationSpeed())
         .on('get', this.getBrightness.bind(this))
         .on('set', this.setBrightness.bind(this));
 
