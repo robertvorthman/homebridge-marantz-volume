@@ -97,7 +97,7 @@ ReceiverVolume.prototype.setPowerOn = function(powerOn, callback) {
         this.setControl('Mute', command, callback);
     } else {
         this.fakePowerState = powerOn ? 1 : 0;
-        this.fakePowerState = 1;
+        //this.fakePowerState = 1;
         this.log("Set receiver %s volume power state to %s", this.zoneName, this.fakePowerState);
         callback(null);
     }
