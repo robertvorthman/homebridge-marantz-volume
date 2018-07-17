@@ -17,6 +17,7 @@ function ReceiverVolume(log, config) {
     this.host = config['host'];
     this.zone = (config['zone'] || 1) | 0; // default to 1, and make sure its an integer
     this.controlPower = !!config['controlPower']; // default to false, and make sure its a bool
+    this.useFan = !!config['useFan']; // default to false, and make sure its a bool
     this.controlMute = !!config['controlMute'] && this.controlPower === false;
     this.mapMaxVolumeTo100 = !!config['mapMaxVolumeTo100'];
     
@@ -149,17 +150,27 @@ ReceiverVolume.prototype.getBrightness = function(callback) {
 }
 
 ReceiverVolume.prototype.getServices = function() {
-    var lightbulbService = new Service.Fan(this.name);
-
+    if (this.useFan) {
+        var lightbulbService = new Service.Fan(this.name);
+    }
+    else {
+        var lightbulbService = new Service.Lightbulb(this.name);
+    }
     lightbulbService
         .getCharacteristic(Characteristic.On)
         .on('get', this.getPowerOn.bind(this))
         .on('set', this.setPowerOn.bind(this));
-
-    lightbulbService
-        .addCharacteristic(new Characteristic.RotationSpeed())
-        .on('get', this.getBrightness.bind(this))
-        .on('set', this.setBrightness.bind(this));
-
+    if (this.useFan) {
+        lightbulbService
+            .addCharacteristic(new Characteristic.RotationSpeed())
+            .on('get', this.getBrightness.bind(this))
+            .on('set', this.setBrightness.bind(this));
+    }
+    else {
+        lightbulbService
+            .addCharacteristic(new Characteristic.Brightness())
+            .on('get', this.getBrightness.bind(this))
+            .on('set', this.setBrightness.bind(this));
+    }
     return [lightbulbService];
 }
