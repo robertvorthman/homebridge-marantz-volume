@@ -1,3 +1,8 @@
+# NO LONGER MAINTAINED
+I've moved on to Home Assistant and it's built in Homekit functionality.
+See this link for how to recreate the functionality of this Homebridge plugin with Home Assistant.
+https://www.home-assistant.io/components/light.template/#theater-volume-control
+
 # homebridge-marantz-volume
 Marantz Receiver plugin for homebridge: https://github.com/nfarina/homebridge
 
